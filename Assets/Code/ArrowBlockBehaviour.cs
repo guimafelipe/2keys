@@ -6,7 +6,7 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 	private int arrowNum; //Number of arrows in the block
 	private int atualArrow = 0; //Atual arrow in the iteration of the block
 	public float blockDamage; //The maximum damage output in the block
-	private float dist = 2f; //The distance between arrows in the display
+	private float dist = 1f; //The distance between arrows in the display
 	public float correctedArrows = 0; //The number of arrows got right by the player
 
 
@@ -23,7 +23,7 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 
 	public void CreateArrows (string arrowsConfig) { //Create the arrows based in the information passed by the scene manager 
 		arrowNum = arrowsConfig.Length;
-		transform.localScale = new Vector3 (transform.localScale.x * arrowNum, transform.localScale.y); //Only make the block larger. I can exclude this if the block don't have a sprite renderer
+		//transform.localScale = new Vector3 (transform.localScale.x * arrowNum, transform.localScale.y); //Only make the block larger. I can exclude this if the block don't have a sprite renderer
 		for (int i = 0; i < arrowNum; i++) {
 			if (arrowsConfig [i] == '+') { //Check is is an up arrow
 				GameObject newArrow = Instantiate (upArrowPrefab);
