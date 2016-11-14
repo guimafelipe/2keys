@@ -5,16 +5,15 @@ public class PlayerManager : MonoBehaviour {
 
 	public GameObject blockPrefab;
 
-	private int atualBlockInd = 0;
-	private string[] levelRoute;
-	private int blockNumber = 6;
+	private string arrowsConfig;
 	public int teamMemberNumber = 4;
 
-	public float aestheticalAdjustmentDistance = -2f;
+	public float aestheticalAdjustmentDistance;
 
 	private int maximumHP = 100;
-	private int currentHP;
+	public int currentHP;
 
+	private GameObject gameMaster;
 	private GameObject atualBlock;
 	private GameObject playerTeam;//private GameObject enemyTeam;
 	// Use this for initialization
@@ -22,13 +21,13 @@ public class PlayerManager : MonoBehaviour {
 	[SerializeField]
 	private HealthIndicator healthIndicator;  //Declare the status indicator
 
-	void Start () {
+	public void InitialSetup (string firstBlock) {
 
 		currentHP = maximumHP;
 		healthIndicator.SetHealth (currentHP, maximumHP);  //set the initial health of the team
 
+		gameMaster = GameObject.Find ("Game Master");
 		playerTeam = GameObject.Find("Team1");
-		//enemyTeam = GameObject.Find("Team2");
 
 		var playerTeamBehaviour = playerTeam.GetComponent<TeamBehaviour>();
 		//var enemyTeamBehaviour = enemyTeam.GetComponent<TeamBehaviour>();
@@ -36,22 +35,13 @@ public class PlayerManager : MonoBehaviour {
 		playerTeamBehaviour.CreateChinchilas(teamMemberNumber);
 		//enemyTeam.CreateChinchilas(teamMemberNumber);
 
-		levelRoute = new string[blockNumber];
-		levelRoute [0] = "-+";
-		levelRoute [1] = "+-";
-		levelRoute [2] = "--+";
-		levelRoute [3] = "+++";
-		levelRoute [4] = "--++";
-		levelRoute [5] = "--+++";   //Set the arrow configuration in the block, each ind is a block. So,there are 6 block in this level
-
-
 		GameObject _newBlock = Instantiate (blockPrefab);  //create the first block of the level
 		//_newBlock.transform.parent = gameObject.transform;
 		_newBlock.transform.position = new Vector3(transform.position.x + aestheticalAdjustmentDistance, transform.position.y, transform.position.z); //Aesthetical ajust in the screen
 		var _blockInstance = _newBlock.transform.GetComponent<ArrowBlockBehaviour> ();  //get the script of the new block
 		if (_blockInstance) {
-			//print (levelRoute [0]);
-			_blockInstance.CreateArrows (levelRoute[0]); //Create the arrows of the first block
+			arrowsConfig = firstBlock;
+			_blockInstance.CreateArrows (firstBlock); //Create the arrows of the first block
 		}
 		atualBlock = _newBlock; //set the first block as the atual block
 	}
@@ -68,19 +58,27 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
-	public void NextBlock(){ //change the block of arrows
-		atualBlockInd++;  //update the indice
+	public void NextBlock(string blockMap){ //change the block of arrows
 		Destroy (atualBlock); //destroy the last block finished
-		if (atualBlockInd < blockNumber) {  //see if there is another block to be created in this level
-			GameObject _newBlock = Instantiate (blockPrefab); //create the block
-			_newBlock.transform.position = new Vector3(transform.position.x +aestheticalAdjustmentDistance, transform.position.y, transform.position.z); //Aesthetical adjustment in the screen
-			//_newBlock.transform.parent = gameObject.transform;
-			var blockInstance = _newBlock.transform.GetComponent<ArrowBlockBehaviour> (); //get the script component of the created block
-			if (blockInstance) {
-				blockInstance.CreateArrows (levelRoute [atualBlockInd]);   //set the arrows configuration of the new block
-			}
-			atualBlock = _newBlock;  //atualize the atual block
+
+		GameObject _newBlock = Instantiate (blockPrefab); //create the block
+		_newBlock.transform.position = new Vector3(transform.position.x +aestheticalAdjustmentDistance, transform.position.y, transform.position.z); //Aesthetical adjustment in the screen
+
+		var blockInstance = _newBlock.transform.GetComponent<ArrowBlockBehaviour> (); //get the script component of the created block
+		if (blockInstance) {
+			arrowsConfig = blockMap;
+			blockInstance.CreateArrows (blockMap);   //set the arrows configuration of the new block
 		}
+		atualBlock = _newBlock;  //atualize the atual block
+	}
+
+	public void EndedBlock(int _arrowsGotRight){
+		gameMaster.GetComponent<GameMasterBehaviour> ().PlayerEnded (_arrowsGotRight);
+		Debug.Log ("Player ended");
+	}
+
+	public int AtualArrowsValue(){
+		return atualBlock.GetComponent<ArrowBlockBehaviour> ().correctedArrows;
 	}
 
 	void KeyPressed(char _signal){
@@ -90,17 +88,34 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
-
-
 	public void GetDamage(int _damageValue){
 		currentHP -= _damageValue;
+		Debug.Log ("Deu damage player " + _damageValue);
 		healthIndicator.SetHealth (currentHP, maximumHP);
 
 	}
 
-	void CheckDeath(){
+	void CheckDeath(){ //need to send death to game master
 		if (currentHP <= 0) {
 			Debug.Log ("Player is ded");
 		}
+	}
+
+
+	public void TotalUrro(){
+
+		var _teamBehaviour = playerTeam.GetComponent<TeamBehaviour> ();
+		if (_teamBehaviour) {
+			_teamBehaviour.FazOUrroTotal (arrowsConfig);
+		}
+		//Function called on the chinchilas when total urro is done
+	}
+
+	public void PartialUrro(int _result){
+		var _teamBehaviour = playerTeam.GetComponent<TeamBehaviour>();
+		if (_teamBehaviour) {
+			_teamBehaviour.FazOUrroPartial (arrowsConfig, _result);
+		}
+		Debug.Log ("roar!");
 	}
 }

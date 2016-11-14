@@ -7,12 +7,11 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 	private int atualArrow = 0; //Atual arrow in the iteration of the block
 	public int blockDamage = 4; //The maximum damage output in the block
 	private float dist = 1f; //The distance between arrows in the display
-	public float correctedArrows = 0; //The number of arrows got right by the player
-	public float aestheticalAdjustmentDistance = 2;
+	public int correctedArrows = 0; //The number of arrows got right by the player
 
 	public GameObject upArrowPrefab; //Prefabs of up and down arrows
 	public GameObject downArrowPrefab;
-	private GameObject manager; //The scene manager
+	private GameObject enemyManager; //The scene manager
 	private GameObject team;
 	private GameObject targetManager;
 	private string arrowsConfig;
@@ -20,7 +19,7 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 	// Use this for initialization
 	void Start(){
 		team = GameObject.Find ("Team2");
-		manager = GameObject.Find ("_enemyTeamManager"); //Find the scene manager in the scene
+		enemyManager = GameObject.Find ("_enemyTeamManager"); //Find the scene manager in the scene
 		targetManager = GameObject.Find("_playerManager"); //Find the player manager in the scene 
 	}
 
@@ -44,48 +43,15 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (atualArrow == arrowNum) { //Only needed to check if the block is already done
-			UrroResult ();
+			Result ();
 			atualArrow++;
 		}
 	}
 
-	void UrroResult(){ //Function Called when all arrows are checked
-		if (correctedArrows == arrowNum) {
-			TotalUrro (); //Got a 100% strke, useful to maintain the combo
-		} else {
-			PartialUrro (); //Get some arrow wrong
-		}
-
-		StartCoroutine (KillBlock ()); //This coroutine is called only to guarantee a little time to the player see the last color
-
+	void Result(){ //Function Called when all arrows are checked
+		enemyManager.GetComponent<AIManager>().EndedBlock(correctedArrows);
 	}
-
-	IEnumerator KillBlock(){ //Kill block coroutine
-		yield return new WaitForSeconds (0.5f);
-		var _fim = manager.transform.GetComponent<AIManager> (); //Call the function in the Manager
-		if (_fim) {
-			_fim.NextBlock ();
-		}
-	}
-
-	void TotalUrro(){
-
-		var _teamBehaviour = team.GetComponent<EnemyTeamBehaviour> ();
-		if (_teamBehaviour) {
-			Debug.Log ("entrou aqui");
-			_teamBehaviour.FazOUrroTotal (arrowsConfig);
-		}
-		DoDamage(); //Function called on the chinchilas when total urro is done
-	}
-
-	void PartialUrro(){
-		float _result = (float)correctedArrows / arrowNum; //Function called when partial urro
-		var _teamBehaviour = team.GetComponent<EnemyTeamBehaviour>();
-		if (_teamBehaviour) {
-			_teamBehaviour.FazOUrroPartial (arrowsConfig, _result);
-		}
-		Debug.Log ("roar!");
-	}
+		
 
 	public void GetArrowPressed(char _signal){ //Function made to check wich arrow was pressed and called the right function based on the manager information
 		if (_signal == '+') {
@@ -118,11 +84,5 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 			nextArrow.GetComponent<SpriteRenderer>().color = Color.red;
 		}
 	}
-
-	void DoDamage(){
-		var targetManagerBehaviour = targetManager.GetComponent<PlayerManager> ();
-		if (targetManagerBehaviour) {
-			targetManagerBehaviour.GetDamage (blockDamage);
-		}
-	}
+		
 }
