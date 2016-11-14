@@ -13,14 +13,20 @@ public class PlayerManager : MonoBehaviour {
 	public float aestheticalAdjustmentDistance = -2f;
 
 	private int maximumHP = 100;
-	public int currentHP = 100;
+	private int currentHP;
 
 	private GameObject atualBlock;
 	private GameObject playerTeam;//private GameObject enemyTeam;
 	// Use this for initialization
 
+	[SerializeField]
+	private HealthIndicator healthIndicator;  //Declare the status indicator
+
 	void Start () {
-		
+
+		currentHP = maximumHP;
+		healthIndicator.SetHealth (currentHP, maximumHP);  //set the initial health of the team
+
 		playerTeam = GameObject.Find("Team1");
 		//enemyTeam = GameObject.Find("Team2");
 
@@ -84,8 +90,17 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
+
+
 	public void GetDamage(int _damageValue){
 		currentHP -= _damageValue;
+		healthIndicator.SetHealth (currentHP, maximumHP);
+
 	}
 
+	void CheckDeath(){
+		if (currentHP <= 0) {
+			Debug.Log ("Player is ded");
+		}
+	}
 }

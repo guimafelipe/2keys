@@ -5,7 +5,7 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 
 	private int arrowNum; //Number of arrows in the block
 	private int atualArrow = 0; //Atual arrow in the iteration of the block
-	public float blockDamage; //The maximum damage output in the block
+	public int blockDamage = 4; //The maximum damage output in the block
 	private float dist = 1f; //The distance between arrows in the display
 	public float correctedArrows = 0; //The number of arrows got right by the player
 
@@ -14,13 +14,14 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 	public GameObject downArrowPrefab;
 	private GameObject manager; //The scene manager
 	private GameObject team;
+	private GameObject targetManager;
 	private string arrowsConfig;
 
 	// Use this for initialization
 	void Start(){
 		team = GameObject.Find ("Team1");
 		manager = GameObject.Find ("_playerManager"); //Find the scene manager in the scene
-
+		targetManager = GameObject.Find("_enemyTeamManager"); //Find the scene manager
 	}
 
 	public void CreateArrows (string _arrowsConfig) { //Create the arrows based in the information passed by the scene manager 
@@ -73,7 +74,7 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 		if (_teamBehaviour) {
 			_teamBehaviour.FazOUrroTotal (arrowsConfig);
 		}
-		Debug.Log ("Birl!"); //Function called on the chinchilas when total urro is done
+		DoDamage(); //Function called on the chinchilas when total urro is done
 	}
 
 	void PartialUrro(){
@@ -114,6 +115,13 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 			correctedArrows++;
 		} else {
 			nextArrow.GetComponent<SpriteRenderer>().color = Color.red;
+		}
+	}
+
+	void DoDamage(){
+		var targetManagerBehaviour = targetManager.GetComponent<AIManager> ();
+		if (targetManagerBehaviour) {
+			targetManagerBehaviour.GetDamage (blockDamage);
 		}
 	}
 }

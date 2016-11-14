@@ -19,7 +19,13 @@ public class AIManager : MonoBehaviour {
 	private GameObject enemyTeam;//private GameObject enemyTeam;
 	// Use this for initialization
 
+	[SerializeField]
+	private HealthIndicator healthIndicator;  //Declare the status indicator
+
 	void Start () {
+
+		currentHP = maximumHP;
+		healthIndicator.SetHealth (currentHP, maximumHP);  //set the initial health of the enemy
 
 		enemyTeam = GameObject.Find("Team2");
 
@@ -83,7 +89,14 @@ public class AIManager : MonoBehaviour {
 
 	public void GetDamage(int _damageValue){
 		currentHP -= _damageValue;
+		healthIndicator.SetHealth (currentHP, maximumHP);
+
 	}
 
+	void CheckDeath(){
+		if (currentHP <= 0) {
+			Debug.Log ("enemy is ded");
+		}
+	}
 
 }
