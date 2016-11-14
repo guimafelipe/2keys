@@ -13,23 +13,26 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 	public GameObject upArrowPrefab; //Prefabs of up and down arrows
 	public GameObject downArrowPrefab;
 	private GameObject manager; //The scene manager
+	private GameObject team;
+	private string arrowsConfig;
 
 	// Use this for initialization
 	void Start(){
-		
+		team = GameObject.Find ("Team1");
 		manager = GameObject.Find ("_Manager"); //Find the scene manager in the scene
 
 	}
 
-	public void CreateArrows (string arrowsConfig) { //Create the arrows based in the information passed by the scene manager 
-		arrowNum = arrowsConfig.Length;
+	public void CreateArrows (string _arrowsConfig) { //Create the arrows based in the information passed by the scene manager 
+		arrowNum = _arrowsConfig.Length;
+		arrowsConfig = _arrowsConfig;
 		//transform.localScale = new Vector3 (transform.localScale.x * arrowNum, transform.localScale.y); //Only make the block larger. I can exclude this if the block don't have a sprite renderer
 		for (int i = 0; i < arrowNum; i++) {
-			if (arrowsConfig [i] == '+') { //Check is is an up arrow
+			if (_arrowsConfig [i] == '+') { //Check is is an up arrow
 				GameObject newArrow = Instantiate (upArrowPrefab);
 				newArrow.transform.position = gameObject.transform.position + new Vector3((float)i * dist,0f,0f); //Set the arrow after the other
 				newArrow.transform.parent = gameObject.transform; //Set this as parent of all arrows
-			} else if (arrowsConfig[i] == '-'){ // Or a down arrow
+			} else if (_arrowsConfig[i] == '-'){ // Or a down arrow
 				GameObject newArrow = Instantiate (downArrowPrefab);
 				newArrow.transform.position = gameObject.transform.position + new Vector3((float)i * dist,0f,0f);
 				newArrow.transform.parent = gameObject.transform;
@@ -58,33 +61,42 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 
 	IEnumerator KillBlock(){ //Kill block coroutine
 		yield return new WaitForSeconds (0.5f);
-		var fim = manager.transform.GetComponent<Scene1Manager> (); //Call the function in the Manager
-		if (fim) {
-			fim.NextBlock ();
+		var _fim = manager.transform.GetComponent<Scene1Manager> (); //Call the function in the Manager
+		if (_fim) {
+			_fim.NextBlock ();
 		}
 	}
 
 	void TotalUrro(){
+		
+		var _teamBehaviour = team.GetComponent<TeamBehaviour> ();
+		if (_teamBehaviour) {
+			_teamBehaviour.FazOUrroTotal (arrowsConfig);
+		}
 		Debug.Log ("Birl!"); //Function called on the chinchilas when total urro is done
 	}
 
 	void PartialUrro(){
-		float result = (float)correctedArrows / arrowNum; //Function falled when partial urro
+		float _result = (float)correctedArrows / arrowNum; //Function called when partial urro
+		var _teamBehaviour = team.GetComponent<TeamBehaviour>();
+		if (_teamBehaviour) {
+			_teamBehaviour.FazOUrroPartial (arrowsConfig, _result);
+		}
 		Debug.Log ("roar!");
 	}
 
-	public void GetArrowPressed(char signal){ //Function made to check wich arrow was pressed and called the right function based on the manager information
-		if (signal == '+') {
+	public void GetArrowPressed(char _signal){ //Function made to check wich arrow was pressed and called the right function based on the manager information
+		if (_signal == '+') {
 			UpPressed (atualArrow);
 		}
-		if (signal == '-') {
+		if (_signal == '-') {
 			DownPressed (atualArrow);
 		}
 		atualArrow++;
 	}
 
-	void UpPressed(int checkArrow){
-		Transform nextArrow = transform.GetChild (checkArrow); //Pass the arrow as parameter
+	void UpPressed(int _checkArrow){
+		Transform nextArrow = transform.GetChild (_checkArrow); //Pass the arrow as parameter
 
 		if(nextArrow.CompareTag("Up Arrow")){
 			nextArrow.GetComponent<SpriteRenderer>().color = Color.green; //Only change the renderer color to the player
@@ -94,8 +106,8 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 		}
 	}
 
-	void DownPressed(int checkArrow){
-		Transform nextArrow = transform.GetChild (checkArrow);
+	void DownPressed(int _checkArrow){
+		Transform nextArrow = transform.GetChild (_checkArrow);
 
 		if(nextArrow.CompareTag("Down Arrow")){
 			nextArrow.GetComponent<SpriteRenderer>().color = Color.green;
