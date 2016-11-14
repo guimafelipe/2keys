@@ -58,6 +58,8 @@ public class GameMasterBehaviour : MonoBehaviour {
 		atualRound++;
 		storedEnemyDmg = 0; //Reset the damages for the new round
 		storedPlayerDmg = 0;
+		waitingEnemy = false;
+		waitingPlayer = false;
 		player.GetComponent<PlayerManager> ().NextBlock (levelRoute[atualRound]);
 		enemy.GetComponent<AIManager> ().NextBlock (levelRoute [atualRound]);
 		canCreateNewRound = false;
