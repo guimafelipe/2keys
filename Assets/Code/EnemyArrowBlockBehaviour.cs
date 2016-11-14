@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyArrowBlockBehaviour : MonoBehaviour {
 
 	private int arrowNum; //Number of arrows in the block
-	public int atualArrow = 0; //Atual arrow in the iteration of the block
+	private int atualArrow = 0; //Atual arrow in the iteration of the block
 	public int blockDamage = 4; //The maximum damage output in the block
 	private float dist = 1f; //The distance between arrows in the display
 	public int correctedArrows = 0; //The number of arrows got right by the player
@@ -14,7 +14,7 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 	private GameObject enemyManager; //The scene manager
 	private GameObject team;
 	private GameObject targetManager;
-	public string arrowsConfig;
+	private string arrowsConfig;
 
 	// Use this for initialization
 	void Start(){
@@ -64,25 +64,40 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 	}
 
 	void UpPressed(int _checkArrow){
-		Transform nextArrow = transform.GetChild (_checkArrow); //Pass the arrow as parameter
+		Transform nextArrow;
+		if (transform.GetChild (_checkArrow)) { //Pass the arrow as parameter
+			nextArrow = transform.GetChild (_checkArrow);
+		
 
-		if(nextArrow.CompareTag("Up Arrow")){
-			nextArrow.GetComponent<SpriteRenderer>().color = Color.green; //Only change the renderer color to the player
-			correctedArrows++;
-		} else {
-			nextArrow.GetComponent<SpriteRenderer>().color = Color.red;
+			if (nextArrow.CompareTag ("Up Arrow")) {
+				nextArrow.GetComponent<SpriteRenderer> ().color = Color.green; //Only change the renderer color to the player
+				correctedArrows++;
+			} else {
+				nextArrow.GetComponent<SpriteRenderer> ().color = Color.red;
+			}
 		}
 	}
 
 	void DownPressed(int _checkArrow){
-		Transform nextArrow = transform.GetChild (_checkArrow);
+		Transform nextArrow;
+		if (transform.GetChild (_checkArrow)) { //Pass the arrow as parameter
+			nextArrow = transform.GetChild (_checkArrow);
+		
 
-		if(nextArrow.CompareTag("Down Arrow")){
-			nextArrow.GetComponent<SpriteRenderer>().color = Color.green;
-			correctedArrows++;
-		} else {
-			nextArrow.GetComponent<SpriteRenderer>().color = Color.red;
+			if (nextArrow.CompareTag ("Down Arrow")) {
+				nextArrow.GetComponent<SpriteRenderer> ().color = Color.green;
+				correctedArrows++;
+			} else {
+				nextArrow.GetComponent<SpriteRenderer> ().color = Color.red;
+			}
 		}
 	}
-		
+
+	public string GetArrowsConfig(){
+		return arrowsConfig;
+	}
+
+	public int GetAtualArrow(){
+		return atualArrow;
+	}
 }

@@ -10,11 +10,13 @@ public class EnemyManager : MonoBehaviour {
 
 	public float aestheticalAdjustmentDistance = 2f;
 
+	private bool canSendSignal;
+
 	private int maximumHP = 100;
 	public int currentHP = 100;
 
 	private GameObject gameMaster;
-	public GameObject atualBlock;
+	private GameObject atualBlock;
 	private GameObject enemyTeam;//private GameObject enemyTeam;
 	// Use this for initialization
 
@@ -48,7 +50,7 @@ public class EnemyManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		CheckDeath ();
-		/*if (atualBlock) { //if there is a block...
+		/*if (atualBlock && canSendSignal) { //if there is a block...
 			if (Input.GetKeyDown ("down")){  //get the user input
 				KeyPressed ('-');
 			}
@@ -60,7 +62,7 @@ public class EnemyManager : MonoBehaviour {
 
 	public void NextBlock(string blockMap){ //change the block of arrows
 		Destroy (atualBlock); //destroy the last block finished
-
+		canSendSignal = true;
 		GameObject _newBlock = Instantiate (enemyBlockPrefab); //create the enemy block
 		_newBlock.transform.position = new Vector3(transform.position.x + aestheticalAdjustmentDistance, transform.position.y, transform.position.z); //Aesthetical adjustment in the screen
 		var blockInstance = _newBlock.transform.GetComponent<EnemyArrowBlockBehaviour> (); //get the script component of the created block
@@ -116,6 +118,14 @@ public class EnemyManager : MonoBehaviour {
 			_teamBehaviour.FazOUrroPartial (arrowsConfig, _result);
 		}
 		Debug.Log ("roar!");
+	}
+
+	public void StopSignal(){
+		canSendSignal = false;
+	}
+
+	public GameObject GetAtualBlock(){
+		return atualBlock;
 	}
 
 }

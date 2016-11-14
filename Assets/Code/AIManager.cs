@@ -31,10 +31,15 @@ public class AIManager : MonoBehaviour {
 
 	public void GetRightArrow(){
 		var _enemyBehaviour = enemyManager.GetComponent<EnemyManager> ();
-		var _atualBlock = _enemyBehaviour.atualBlock;
+		var _atualBlock = _enemyBehaviour.GetAtualBlock ();
 		var _atualBlockBehaviour = _atualBlock.GetComponent<EnemyArrowBlockBehaviour> ();
 
-		rightArrow = _atualBlockBehaviour.arrowsConfig [_atualBlockBehaviour.atualArrow];
+		string _arrowsConfig = _atualBlockBehaviour.GetArrowsConfig ();
+		int _atualArrow = _atualBlockBehaviour.GetAtualArrow();
+
+		if (_atualArrow < _arrowsConfig.Length) {
+			rightArrow = _arrowsConfig [_atualArrow];
+		}
 
 	}
 
@@ -50,7 +55,7 @@ public class AIManager : MonoBehaviour {
 			gotRight = false;
 		}
 		var _enemyBehaviour = enemyManager.GetComponent<EnemyManager> ();
-		var _atualBlock = _enemyBehaviour.atualBlock;
+		var _atualBlock = _enemyBehaviour.GetAtualBlock ();
 		var _atualBlockBehaviour = _atualBlock.GetComponent<EnemyArrowBlockBehaviour> ();	
 
 		if (gotRight) {

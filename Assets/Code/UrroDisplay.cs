@@ -24,7 +24,7 @@ public class UrroDisplay : MonoBehaviour {
 
 	public void DisplayUrro(string _urroType){
 		urroBaloon.GetComponent<Image> ().sprite = Resources.Load (GetUrro (_urroType), typeof(Sprite)) as Sprite;   //Get the urro text in the urro dictionary class
-		Debug.Log("Coroutine started");
+		//Debug.Log("Coroutine started");
 		StartCoroutine (ShowUrro());
 	}
 

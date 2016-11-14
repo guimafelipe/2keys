@@ -40,14 +40,13 @@ public class GameMasterBehaviour : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (canCreateNewRound) {
-			CreateNewRound ();
+			Debug.Log ("Criou novo round");
+			StartCoroutine (TimePreparation());
 			canCreateNewRound = false;
 		}
 	}
 
 	void CreateNewRound(){
-
-		StartCoroutine (TimePreparation());
 		atualRound++;
 		storedEnemyDmg = 0; //Reset the damages for the new round
 		storedPlayerDmg = 0;
@@ -59,9 +58,11 @@ public class GameMasterBehaviour : MonoBehaviour {
 		canCreateNewRound = false;
 	}
 
-	IEnumerator TimePreparation(){
-		yield return new WaitForSeconds (2f);
-	
+	IEnumerator TimePreparation(){    //Only for aesthetics purposes
+		Debug.Log("Entrou no wait area");
+		yield return new WaitForSeconds (1f); 
+		Debug.Log ("Esperou os segundos");
+		CreateNewRound ();
 	}
 
 	public void PlayerEnded(int _result){
@@ -73,7 +74,8 @@ public class GameMasterBehaviour : MonoBehaviour {
 			Debug.Log ("Player deu dano full");
 			int _enemyDmg = enemy.GetComponent<EnemyManager> ().AtualArrowsValue ();
 			DoDamage (_enemyDmg, _result);
-			CreateNewRound ();
+			enemy.GetComponent<EnemyManager> ().StopSignal();
+			canCreateNewRound = true;
 		} else {
 			waitingEnemy = true;
 			storedPlayerDmg = _result;
@@ -87,7 +89,8 @@ public class GameMasterBehaviour : MonoBehaviour {
 		if (_result == levelRoute.Length) {
 			int _playerDmg = player.GetComponent<PlayerManager> ().AtualArrowsValue ();
 			DoDamage (_result, _playerDmg);
-			CreateNewRound ();
+			player.GetComponent<PlayerManager> ().StopSignal();
+			canCreateNewRound = true;
 		} else {
 			waitingPlayer = true;
 			storedEnemyDmg = _result;
@@ -113,6 +116,7 @@ public class GameMasterBehaviour : MonoBehaviour {
 		}
 
 		canCreateNewRound = true;
+
 	}
 
 	public void GameOver(string _whoDied){

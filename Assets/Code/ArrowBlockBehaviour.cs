@@ -65,24 +65,28 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 	}
 
 	void UpPressed(int _checkArrow){
-		Transform nextArrow = transform.GetChild (_checkArrow); //Pass the arrow as parameter
-
-		if(nextArrow.CompareTag("Up Arrow")){
-			nextArrow.GetComponent<SpriteRenderer>().color = Color.green; //Only change the renderer color to the player
-			correctedArrows++;
-		} else {
-			nextArrow.GetComponent<SpriteRenderer>().color = Color.red;
+		Transform nextArrow;
+		if (transform.GetChild (_checkArrow)) { //Pass the arrow as parameter
+			nextArrow = transform.GetChild (_checkArrow);
+			if (nextArrow.CompareTag ("Up Arrow")) {
+				nextArrow.GetComponent<SpriteRenderer> ().color = Color.green; //Only change the renderer color to the player
+				correctedArrows++;
+			} else {
+				nextArrow.GetComponent<SpriteRenderer> ().color = Color.red;
+			}
 		}
 	}
 
 	void DownPressed(int _checkArrow){
-		Transform nextArrow = transform.GetChild (_checkArrow);
-
-		if(nextArrow.CompareTag("Down Arrow")){
-			nextArrow.GetComponent<SpriteRenderer>().color = Color.green;
-			correctedArrows++;
-		} else {
-			nextArrow.GetComponent<SpriteRenderer>().color = Color.red;
+		Transform nextArrow;
+		if (transform.GetChild (_checkArrow)) { //Pass the arrow as parameter
+			nextArrow = transform.GetChild (_checkArrow);
+			if (nextArrow.CompareTag ("Down Arrow")) {
+				nextArrow.GetComponent<SpriteRenderer> ().color = Color.green;
+				correctedArrows++;
+			} else {
+				nextArrow.GetComponent<SpriteRenderer> ().color = Color.red;
+			}
 		}
 	}
 		

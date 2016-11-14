@@ -10,6 +10,8 @@ public class PlayerManager : MonoBehaviour {
 
 	public float aestheticalAdjustmentDistance;
 
+	private bool canSendSignal;
+
 	private int maximumHP = 100;
 	public int currentHP;
 
@@ -25,6 +27,8 @@ public class PlayerManager : MonoBehaviour {
 
 		currentHP = maximumHP;
 		healthIndicator.SetHealth (currentHP, maximumHP);  //set the initial health of the team
+
+		canSendSignal = true;
 
 		gameMaster = GameObject.Find ("Game Master");
 		playerTeam = GameObject.Find("Team1");
@@ -49,7 +53,7 @@ public class PlayerManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		CheckDeath ();
-		if (atualBlock) { //if there is a block...
+		if (atualBlock && canSendSignal) { //if there is a block...
 			if (Input.GetKeyDown ("s")){  //get the user input
 				KeyPressed ('-');
 			}
@@ -61,7 +65,7 @@ public class PlayerManager : MonoBehaviour {
 
 	public void NextBlock(string blockMap){ //change the block of arrows
 		Destroy (atualBlock); //destroy the last block finished
-
+		canSendSignal = true;
 		GameObject _newBlock = Instantiate (blockPrefab); //create the block
 		_newBlock.transform.position = new Vector3(transform.position.x +aestheticalAdjustmentDistance, transform.position.y, transform.position.z); //Aesthetical adjustment in the screen
 
@@ -118,5 +122,9 @@ public class PlayerManager : MonoBehaviour {
 			_teamBehaviour.FazOUrroPartial (arrowsConfig, _result);
 		}
 		Debug.Log ("roar!");
+	}
+
+	public void StopSignal(){
+		canSendSignal = false;
 	}
 }

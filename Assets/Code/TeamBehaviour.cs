@@ -33,7 +33,7 @@ public class TeamBehaviour : MonoBehaviour {
 		var selectedChinchilaBehaviour = selectedChinchila.GetComponent<ChinchilaController> ();
 		if (selectedChinchilaBehaviour) {
 			selectedChinchilaBehaviour.FazOUrro (_urroType);
-			Debug.Log ("Chamou team urro partial");
+			//Debug.Log ("Chamou team urro partial");
 		}
 	}
 
@@ -42,7 +42,7 @@ public class TeamBehaviour : MonoBehaviour {
 			var selectedChinchilaBehaviour = transform.GetChild (i).GetComponent<ChinchilaController> ();
 			if (selectedChinchilaBehaviour) {
 				selectedChinchilaBehaviour.FazOUrro (_urroType);
-				Debug.Log ("Chamou team urro total");
+				//Debug.Log ("Chamou team urro total");
 			}
 		
 		}
