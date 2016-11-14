@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ArrowBlockBehaviour : MonoBehaviour {
+public class EnemyArrowBlockBehaviour : MonoBehaviour {
 
 	private int arrowNum; //Number of arrows in the block
 	private int atualArrow = 0; //Atual arrow in the iteration of the block
@@ -18,8 +18,8 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 
 	// Use this for initialization
 	void Start(){
-		team = GameObject.Find ("Team1");
-		manager = GameObject.Find ("_playerManager"); //Find the scene manager in the scene
+		team = GameObject.Find ("Team2");
+		manager = GameObject.Find ("_enemyTeamManager"); //Find the scene manager in the scene
 
 	}
 
@@ -39,7 +39,7 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 			}
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (atualArrow == arrowNum) { //Only needed to check if the block is already done
@@ -61,16 +61,17 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 
 	IEnumerator KillBlock(){ //Kill block coroutine
 		yield return new WaitForSeconds (0.5f);
-		var _fim = manager.transform.GetComponent<PlayerManager> (); //Call the function in the Manager
+		var _fim = manager.transform.GetComponent<AIManager> (); //Call the function in the Manager
 		if (_fim) {
 			_fim.NextBlock ();
 		}
 	}
 
 	void TotalUrro(){
-		
-		var _teamBehaviour = team.GetComponent<TeamBehaviour> ();
+
+		var _teamBehaviour = team.GetComponent<EnemyTeamBehaviour> ();
 		if (_teamBehaviour) {
+			Debug.Log ("entrou aqui");
 			_teamBehaviour.FazOUrroTotal (arrowsConfig);
 		}
 		Debug.Log ("Birl!"); //Function called on the chinchilas when total urro is done
@@ -78,7 +79,7 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 
 	void PartialUrro(){
 		float _result = (float)correctedArrows / arrowNum; //Function called when partial urro
-		var _teamBehaviour = team.GetComponent<TeamBehaviour>();
+		var _teamBehaviour = team.GetComponent<EnemyTeamBehaviour>();
 		if (_teamBehaviour) {
 			_teamBehaviour.FazOUrroPartial (arrowsConfig, _result);
 		}

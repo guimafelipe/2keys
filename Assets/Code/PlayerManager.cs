@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Scene1Manager : MonoBehaviour {
+public class PlayerManager : MonoBehaviour {
 
 	public GameObject blockPrefab;
 
@@ -48,10 +48,10 @@ public class Scene1Manager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (atualBlock) { //if there is a block...
-			if (Input.GetKeyDown ("s") || Input.GetKeyDown ("down") ){  //get the user input
+			if (Input.GetKeyDown ("s")){  //get the user input
 				KeyPressed ('-');
 			}
-			if (Input.GetKeyDown ("w") || Input.GetKeyDown("up")) {
+			if (Input.GetKeyDown ("w")) {
 				KeyPressed ('+');
 			}
 		}
