@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AIManager : MonoBehaviour {
+public class EnemyManager : MonoBehaviour {
 
 	public GameObject enemyBlockPrefab;
 

@@ -11,9 +11,8 @@ public class GameMasterBehaviour : MonoBehaviour {
 	private int storedPlayerDmg;
 	private int storedEnemyDmg;
 
-	private string[] levelRoute;
+	private string levelRoute;
 
-	private int numOfRounds = 6;
 	private int atualRound;
 
 	private bool canCreateNewRound;
@@ -28,21 +27,13 @@ public class GameMasterBehaviour : MonoBehaviour {
 		atualRound = 0;
 		canCreateNewRound = false;
 
+		levelRoute = BlockMap.GetBlock (atualRound);
+
 		storedEnemyDmg = 0;
 		storedPlayerDmg = 0;
 
-		levelRoute = new string[numOfRounds];
-		for (int i = 0; i < numOfRounds; i++) {
-			//set the block map configuration
-			levelRoute [0] = "-+";
-			levelRoute [1] = "+-";
-			levelRoute [2] = "--+";
-			levelRoute [3] = "+++";
-			levelRoute [4] = "--++";
-			levelRoute [5] = "--+++";
-		}
-		player.GetComponent<PlayerManager>().InitialSetup (levelRoute[0]);
-		enemy.GetComponent<AIManager>().InitialSetup (levelRoute[0]);
+		player.GetComponent<PlayerManager>().InitialSetup (levelRoute);
+		enemy.GetComponent<EnemyManager>().InitialSetup (levelRoute);
 		Debug.Log ("Fez initial setup");
 	}
 	
@@ -60,8 +51,9 @@ public class GameMasterBehaviour : MonoBehaviour {
 		storedPlayerDmg = 0;
 		waitingEnemy = false;
 		waitingPlayer = false;
-		player.GetComponent<PlayerManager> ().NextBlock (levelRoute[atualRound]);
-		enemy.GetComponent<AIManager> ().NextBlock (levelRoute [atualRound]);
+		levelRoute = BlockMap.GetBlock (atualRound);
+		player.GetComponent<PlayerManager> ().NextBlock (levelRoute);
+		enemy.GetComponent<EnemyManager> ().NextBlock (levelRoute);
 		canCreateNewRound = false;
 	}
 
@@ -70,9 +62,9 @@ public class GameMasterBehaviour : MonoBehaviour {
 		if (waitingPlayer) {
 			DoDamage (storedEnemyDmg, _result);		
 		}
-		if (_result == levelRoute[atualRound].Length) {
+		if (_result == levelRoute.Length) {
 			Debug.Log ("Player deu dano full");
-			int _enemyDmg = enemy.GetComponent<AIManager> ().AtualArrowsValue ();
+			int _enemyDmg = enemy.GetComponent<EnemyManager> ().AtualArrowsValue ();
 			DoDamage (_enemyDmg, _result);
 			CreateNewRound ();
 		} else {
@@ -85,7 +77,7 @@ public class GameMasterBehaviour : MonoBehaviour {
 		if (waitingEnemy) {
 			DoDamage (_result, storedPlayerDmg);	
 		}
-		if (_result == levelRoute[atualRound].Length) {
+		if (_result == levelRoute.Length) {
 			int _playerDmg = player.GetComponent<PlayerManager> ().AtualArrowsValue ();
 			DoDamage (_result, _playerDmg);
 			CreateNewRound ();
@@ -97,17 +89,17 @@ public class GameMasterBehaviour : MonoBehaviour {
 
 	void DoDamage (int damageInPlayer, int damageInEnemy){
 		var _playerBehaviour = player.GetComponent<PlayerManager> ();
-		var _enemyBehaviour = enemy.GetComponent<AIManager> ();
+		var _enemyBehaviour = enemy.GetComponent<EnemyManager> ();
 
 		_playerBehaviour.GetDamage (damageInPlayer);
 		_enemyBehaviour.GetDamage (damageInEnemy);
 
-		if (damageInEnemy == levelRoute [atualRound].Length) {
+		if (damageInEnemy == levelRoute.Length) {
 			_playerBehaviour.TotalUrro ();
 		} else {
 			_playerBehaviour.PartialUrro (damageInEnemy);
 		}
-		if (damageInPlayer == levelRoute [atualRound].Length) {
+		if (damageInPlayer == levelRoute.Length) {
 			_enemyBehaviour.TotalUrro ();
 		} else {
 			_enemyBehaviour.PartialUrro (damageInPlayer);

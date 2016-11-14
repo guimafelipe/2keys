@@ -49,7 +49,7 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 	}
 
 	void Result(){ //Function Called when all arrows are checked
-		enemyManager.GetComponent<AIManager>().EndedBlock(correctedArrows);
+		enemyManager.GetComponent<EnemyManager>().EndedBlock(correctedArrows);
 	}
 		
 
