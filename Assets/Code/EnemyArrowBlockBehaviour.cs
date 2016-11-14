@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyArrowBlockBehaviour : MonoBehaviour {
 
 	private int arrowNum; //Number of arrows in the block
-	private int atualArrow = 0; //Atual arrow in the iteration of the block
+	public int atualArrow = 0; //Atual arrow in the iteration of the block
 	public int blockDamage = 4; //The maximum damage output in the block
 	private float dist = 1f; //The distance between arrows in the display
 	public int correctedArrows = 0; //The number of arrows got right by the player
@@ -14,7 +14,7 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 	private GameObject enemyManager; //The scene manager
 	private GameObject team;
 	private GameObject targetManager;
-	private string arrowsConfig;
+	public string arrowsConfig;
 
 	// Use this for initialization
 	void Start(){

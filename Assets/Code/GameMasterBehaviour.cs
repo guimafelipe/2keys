@@ -46,6 +46,8 @@ public class GameMasterBehaviour : MonoBehaviour {
 	}
 
 	void CreateNewRound(){
+
+		StartCoroutine (TimePreparation());
 		atualRound++;
 		storedEnemyDmg = 0; //Reset the damages for the new round
 		storedPlayerDmg = 0;
@@ -55,6 +57,11 @@ public class GameMasterBehaviour : MonoBehaviour {
 		player.GetComponent<PlayerManager> ().NextBlock (levelRoute);
 		enemy.GetComponent<EnemyManager> ().NextBlock (levelRoute);
 		canCreateNewRound = false;
+	}
+
+	IEnumerator TimePreparation(){
+		yield return new WaitForSeconds (2f);
+	
 	}
 
 	public void PlayerEnded(int _result){

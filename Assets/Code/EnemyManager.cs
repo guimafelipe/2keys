@@ -14,7 +14,7 @@ public class EnemyManager : MonoBehaviour {
 	public int currentHP = 100;
 
 	private GameObject gameMaster;
-	private GameObject atualBlock;
+	public GameObject atualBlock;
 	private GameObject enemyTeam;//private GameObject enemyTeam;
 	// Use this for initialization
 
@@ -48,14 +48,14 @@ public class EnemyManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		CheckDeath ();
-		if (atualBlock) { //if there is a block...
+		/*if (atualBlock) { //if there is a block...
 			if (Input.GetKeyDown ("down")){  //get the user input
 				KeyPressed ('-');
 			}
 			if (Input.GetKeyDown("up")) {
 				KeyPressed ('+');
 			}
-		}
+		}*/
 	}
 
 	public void NextBlock(string blockMap){ //change the block of arrows
