@@ -10,6 +10,11 @@ public class PlayerManager : MonoBehaviour {
 	private int blockNumber = 6;
 	public int teamMemberNumber = 4;
 
+	public float aestheticalAdjustmentDistance = -2f;
+
+	private int maximumHP = 100;
+	public int currentHP = 100;
+
 	private GameObject atualBlock;
 	private GameObject playerTeam;//private GameObject enemyTeam;
 	// Use this for initialization
@@ -36,7 +41,7 @@ public class PlayerManager : MonoBehaviour {
 
 		GameObject _newBlock = Instantiate (blockPrefab);  //create the first block of the level
 		//_newBlock.transform.parent = gameObject.transform;
-		_newBlock.transform.position = transform.position;
+		_newBlock.transform.position = new Vector3(transform.position.x + aestheticalAdjustmentDistance, transform.position.y, transform.position.z); //Aesthetical ajust in the screen
 		var _blockInstance = _newBlock.transform.GetComponent<ArrowBlockBehaviour> ();  //get the script of the new block
 		if (_blockInstance) {
 			//print (levelRoute [0]);
@@ -62,7 +67,7 @@ public class PlayerManager : MonoBehaviour {
 		Destroy (atualBlock); //destroy the last block finished
 		if (atualBlockInd < blockNumber) {  //see if there is another block to be created in this level
 			GameObject _newBlock = Instantiate (blockPrefab); //create the block
-			_newBlock.transform.position = transform.position;
+			_newBlock.transform.position = new Vector3(transform.position.x +aestheticalAdjustmentDistance, transform.position.y, transform.position.z); //Aesthetical adjustment in the screen
 			//_newBlock.transform.parent = gameObject.transform;
 			var blockInstance = _newBlock.transform.GetComponent<ArrowBlockBehaviour> (); //get the script component of the created block
 			if (blockInstance) {
@@ -77,6 +82,10 @@ public class PlayerManager : MonoBehaviour {
 		if(actualBlockAction){
 			actualBlockAction.GetArrowPressed (_signal);   //send the user's input to the atual block
 		}
+	}
+
+	public void GetDamage(int _damageValue){
+		currentHP -= _damageValue;
 	}
 
 }

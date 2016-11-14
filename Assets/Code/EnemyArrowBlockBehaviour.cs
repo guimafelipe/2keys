@@ -8,7 +8,7 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 	public float blockDamage; //The maximum damage output in the block
 	private float dist = 1f; //The distance between arrows in the display
 	public float correctedArrows = 0; //The number of arrows got right by the player
-
+	public float aestheticalAdjustmentDistance = 2;
 
 	public GameObject upArrowPrefab; //Prefabs of up and down arrows
 	public GameObject downArrowPrefab;
@@ -30,11 +30,11 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 		for (int i = 0; i < arrowNum; i++) {
 			if (_arrowsConfig [i] == '+') { //Check is is an up arrow
 				GameObject newArrow = Instantiate (upArrowPrefab);
-				newArrow.transform.position = gameObject.transform.position + new Vector3((float)i * dist,0f,0f); //Set the arrow after the other
+				newArrow.transform.position = gameObject.transform.position + new Vector3(-arrowNum*dist + (float)i * dist,0f,0f); //Set the arrow after the other
 				newArrow.transform.parent = gameObject.transform; //Set this as parent of all arrows
 			} else if (_arrowsConfig[i] == '-'){ // Or a down arrow
 				GameObject newArrow = Instantiate (downArrowPrefab);
-				newArrow.transform.position = gameObject.transform.position + new Vector3((float)i * dist,0f,0f);
+				newArrow.transform.position = gameObject.transform.position + new Vector3(-arrowNum*dist + (float)i * dist,0f,0f);
 				newArrow.transform.parent = gameObject.transform;
 			}
 		}
