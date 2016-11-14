@@ -48,6 +48,7 @@ public class PlayerManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		CheckDeath ();
 		if (atualBlock) { //if there is a block...
 			if (Input.GetKeyDown ("s")){  //get the user input
 				KeyPressed ('-');
@@ -97,7 +98,7 @@ public class PlayerManager : MonoBehaviour {
 
 	void CheckDeath(){ //need to send death to game master
 		if (currentHP <= 0) {
-			Debug.Log ("Player is ded");
+			gameMaster.GetComponent<GameMasterBehaviour> ().GameOver ("player");
 		}
 	}
 

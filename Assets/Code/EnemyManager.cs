@@ -47,6 +47,7 @@ public class EnemyManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		CheckDeath ();
 		if (atualBlock) { //if there is a block...
 			if (Input.GetKeyDown ("down")){  //get the user input
 				KeyPressed ('-');
@@ -96,7 +97,7 @@ public class EnemyManager : MonoBehaviour {
 
 	void CheckDeath(){
 		if (currentHP <= 0) {
-			Debug.Log ("enemy is ded");
+			gameMaster.GetComponent<GameMasterBehaviour> ().GameOver ("enemy");
 		}
 	}
 

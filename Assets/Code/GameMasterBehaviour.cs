@@ -107,4 +107,17 @@ public class GameMasterBehaviour : MonoBehaviour {
 
 		canCreateNewRound = true;
 	}
+
+	public void GameOver(string _whoDied){
+		canCreateNewRound = false;
+		Debug.Log ("game over called");
+		if (_whoDied == "player") {
+			//Do something to indicate the player victory
+			GetComponent<GameOverFade>().BeginFade(1);
+		}
+		else if (_whoDied == "enemy"){
+			//Do something to indicate the player defeat
+			GetComponent<GameOverFade>().BeginFade(1);
+		}
+	}
 }
