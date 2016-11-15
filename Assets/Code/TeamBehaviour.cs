@@ -28,7 +28,7 @@ public class TeamBehaviour : MonoBehaviour {
 	}
 
 
-	public void FazOUrroPartial(string _urroType, float _ratio){
+	public void FazOUrroPartial(string _urroType, int _result){
 		Transform selectedChinchila = transform.GetChild ((int)Mathf.Floor (Random.Range (0f, (float)teamSize)));
 		var selectedChinchilaBehaviour = selectedChinchila.GetComponent<ChinchilaController> ();
 		if (selectedChinchilaBehaviour) {

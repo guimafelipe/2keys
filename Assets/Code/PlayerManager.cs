@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour {
 
 	private bool canSendSignal;
 
-	private int maximumHP = 100;
+	private int maximumHP = 50;
 	public int currentHP;
 
 	private GameObject gameMaster;

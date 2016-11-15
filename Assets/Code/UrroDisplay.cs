@@ -10,7 +10,12 @@ public class UrroDisplay : MonoBehaviour {
 	private Text urroText; 
 	//private string spriteName;
 
+	private AudioManager audioManager;
+
 	void Start(){
+
+		audioManager = AudioManager.instance;
+
 		if (urroBaloon == null) {
 			Debug.Log ("No urro baloon");
 		}
@@ -37,25 +42,19 @@ public class UrroDisplay : MonoBehaviour {
 	}
 
 	public string GetUrro(string _urroType){  //get the urro sprite from the urroType string
-		switch (_urroType){
-		case "++":
+		switch (_urroType.Length){
+		case 2:
+			audioManager.PlaySound ("Arrr1");
 			return "urro_7";
-		case "+-":
+		case 3:
+			audioManager.PlaySound ("Rrrr1");
 			return "urro_5";
-		case "--":
-			return "urro_6";
-		case "-+":
-
-		case "+++":
-
-		case "---":
-
-		case "++-":
-
-		case "--+":
-
-		default:
+		case 4:
+			audioManager.PlaySound ("Rawr1");
 			return "urro_4";
+		default:
+			audioManager.PlaySound ("Birrl2");
+			return "urro_6";
 		}
 
 	}

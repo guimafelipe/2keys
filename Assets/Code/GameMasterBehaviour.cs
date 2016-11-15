@@ -127,18 +127,31 @@ public class GameMasterBehaviour : MonoBehaviour {
 		var _playerBehaviour = player.GetComponent<PlayerManager> ();
 		var _enemyBehaviour = enemy.GetComponent<EnemyManager> ();
 
-		_playerBehaviour.GetDamage (damageInPlayer);
-		_enemyBehaviour.GetDamage (damageInEnemy);
+		int maximumDamageThisRound = levelRoute.Length;
 
-		if (damageInEnemy == levelRoute.Length) {
-			_playerBehaviour.TotalUrro ();
+		int realDamageInPlayer = damageInPlayer - (maximumDamageThisRound - damageInPlayer);
+		int realDamageInEnemy = damageInEnemy - (maximumDamageThisRound - damageInEnemy);
+
+		if (realDamageInPlayer >= 0) {
+			_playerBehaviour.GetDamage (realDamageInPlayer);
 		} else {
-			_playerBehaviour.PartialUrro (damageInEnemy);
+			_playerBehaviour.GetDamage (0);
 		}
-		if (damageInPlayer == levelRoute.Length) {
-			_enemyBehaviour.TotalUrro ();
+		if (realDamageInEnemy >= 0) {
+			_enemyBehaviour.GetDamage (realDamageInEnemy);
 		} else {
-			_enemyBehaviour.PartialUrro (damageInPlayer);
+			_enemyBehaviour.GetDamage (0);
+		}
+
+		if (realDamageInEnemy == levelRoute.Length) {
+			_playerBehaviour.TotalUrro ();
+		} else if (realDamageInEnemy > 0){
+			_playerBehaviour.PartialUrro (realDamageInEnemy);
+		}
+		if (realDamageInPlayer == levelRoute.Length) {
+			_enemyBehaviour.TotalUrro ();
+		} else if (realDamageInPlayer > 0){
+			_enemyBehaviour.PartialUrro (realDamageInPlayer);
 		}
 
 		canCreateNewRound = true;
