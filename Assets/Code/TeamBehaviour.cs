@@ -24,6 +24,7 @@ public class TeamBehaviour : MonoBehaviour {
 			newChinchila.transform.SetParent(gameObject.transform);
 			newChinchila.transform.position = transform.position;
 			newChinchila.transform.Translate (Random.Range (-chinchilaInstanceRange, chinchilaInstanceRange), Random.Range (-chinchilaInstanceRange,chinchilaInstanceRange), 0f);
+			newChinchila.transform.position = new Vector3 (newChinchila.transform.position.x, newChinchila.transform.position.y, newChinchila.transform.position.y);
 		}
 	}
 
