@@ -45,6 +45,7 @@ public class EnemyManager : MonoBehaviour {
 			//Debug.Log("chamou a criação de setas");
 		}
 		atualBlock = _newBlock; //set the first block as the atual block
+		canSendSignal = true;
 	}
 
 	// Update is called once per frame
@@ -62,7 +63,6 @@ public class EnemyManager : MonoBehaviour {
 
 	public void NextBlock(string blockMap){ //change the block of arrows
 		Destroy (atualBlock); //destroy the last block finished
-		canSendSignal = true;
 		GameObject _newBlock = Instantiate (enemyBlockPrefab); //create the enemy block
 		_newBlock.transform.position = new Vector3(transform.position.x + aestheticalAdjustmentDistance, transform.position.y, transform.position.z); //Aesthetical adjustment in the screen
 		var blockInstance = _newBlock.transform.GetComponent<EnemyArrowBlockBehaviour> (); //get the script component of the created block
@@ -70,13 +70,15 @@ public class EnemyManager : MonoBehaviour {
 			arrowsConfig = blockMap;
 			blockInstance.CreateArrows (blockMap);   //set the arrows configuration of the new block
 		}
+		canSendSignal = true;
 		atualBlock = _newBlock;  //atualize the atual block
 
 	}
 
 	public void EndedBlock(int _arrowsGotRight){
 		gameMaster.GetComponent<GameMasterBehaviour> ().EnemyEnded (_arrowsGotRight);
-		Debug.Log ("Enemy ended");
+		canSendSignal = false;
+		//Debug.Log ("Enemy ended");
 	}
 
 	public int AtualArrowsValue(){
@@ -85,14 +87,14 @@ public class EnemyManager : MonoBehaviour {
 
 	void KeyPressed(char _signal){
 		var actualBlockAction = atualBlock.GetComponent<EnemyArrowBlockBehaviour> (); 
-		if(actualBlockAction){
+		if(actualBlockAction && canSendSignal){
 			actualBlockAction.GetArrowPressed (_signal);   //send the user's input to the atual block
 		}
 	}
 
 	public void GetDamage(int _damageValue){
 		currentHP -= _damageValue;
-		Debug.Log ("deu dano no enemy " + _damageValue);
+		//Debug.Log ("deu dano no enemy " + _damageValue);
 		healthIndicator.SetHealth (currentHP, maximumHP);
 
 	}
@@ -117,7 +119,7 @@ public class EnemyManager : MonoBehaviour {
 		if (_teamBehaviour) {
 			_teamBehaviour.FazOUrroPartial (arrowsConfig, _result);
 		}
-		Debug.Log ("roar!");
+		//Debug.Log ("roar!");
 	}
 
 	public void StopSignal(){
@@ -128,4 +130,7 @@ public class EnemyManager : MonoBehaviour {
 		return atualBlock;
 	}
 
+	public bool CheckIfCanSendSignal(){
+		return canSendSignal;
+	}
 }

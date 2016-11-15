@@ -19,6 +19,13 @@ public class GameMasterBehaviour : MonoBehaviour {
 
 	private bool waitingPlayer, waitingEnemy;
 
+	private float timeBetweenBlocks = 1.5f;
+
+	private float secondsToStart = 3f;
+
+	[SerializeField]
+	private DisplayScript display;
+
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find ("_playerManager");
@@ -32,15 +39,24 @@ public class GameMasterBehaviour : MonoBehaviour {
 		storedEnemyDmg = 0;
 		storedPlayerDmg = 0;
 
+		StartCoroutine(InitialCountdown());
+	}
+
+	IEnumerator InitialCountdown(){
+		yield return new WaitForSeconds(3f);
 		player.GetComponent<PlayerManager>().InitialSetup (levelRoute);
 		enemy.GetComponent<EnemyManager>().InitialSetup (levelRoute);
-		Debug.Log ("Fez initial setup");
+		display.EndOfCountdown ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
+		if (secondsToStart > 0) {
+			secondsToStart -= Time.deltaTime;
+			display.SetCountdown (secondsToStart);
+		}
 		if (canCreateNewRound) {
-			Debug.Log ("Criou novo round");
+			//Debug.Log ("Criou novo round");
 			StartCoroutine (TimePreparation());
 			canCreateNewRound = false;
 		}
@@ -48,6 +64,7 @@ public class GameMasterBehaviour : MonoBehaviour {
 
 	void CreateNewRound(){
 		atualRound++;
+		display.SetRound (atualRound + 1);
 		storedEnemyDmg = 0; //Reset the damages for the new round
 		storedPlayerDmg = 0;
 		waitingEnemy = false;
@@ -59,19 +76,19 @@ public class GameMasterBehaviour : MonoBehaviour {
 	}
 
 	IEnumerator TimePreparation(){    //Only for aesthetics purposes
-		Debug.Log("Entrou no wait area");
-		yield return new WaitForSeconds (1f); 
-		Debug.Log ("Esperou os segundos");
+		//Debug.Log("Entrou no wait area");
+		yield return new WaitForSeconds (timeBetweenBlocks); 
+		//Debug.Log ("Esperou os segundos");
 		CreateNewRound ();
 	}
 
 	public void PlayerEnded(int _result){
-		Debug.Log ("Entered player ended");
+		//Debug.Log ("Entered player ended");
 		if (waitingPlayer) {
 			DoDamage (storedEnemyDmg, _result);		
 		}
 		if (_result == levelRoute.Length) {
-			Debug.Log ("Player deu dano full");
+			//Debug.Log ("Player deu dano full");
 			int _enemyDmg = enemy.GetComponent<EnemyManager> ().AtualArrowsValue ();
 			DoDamage (_enemyDmg, _result);
 			enemy.GetComponent<EnemyManager> ().StopSignal();

@@ -95,7 +95,7 @@ public class PlayerManager : MonoBehaviour {
 
 	public void GetDamage(int _damageValue){
 		currentHP -= _damageValue;
-		Debug.Log ("Deu damage player " + _damageValue);
+		//Debug.Log ("Deu damage player " + _damageValue);
 		healthIndicator.SetHealth (currentHP, maximumHP);
 
 	}
@@ -121,7 +121,7 @@ public class PlayerManager : MonoBehaviour {
 		if (_teamBehaviour) {
 			_teamBehaviour.FazOUrroPartial (arrowsConfig, _result);
 		}
-		Debug.Log ("roar!");
+//		Debug.Log ("roar!");
 	}
 
 	public void StopSignal(){

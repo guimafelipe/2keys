@@ -16,6 +16,6 @@ public class EnemyChinchilaController : MonoBehaviour {
 	public void FazOUrro(string _urroType){
 		var _urroDisplay = gameObject.GetComponentInChildren<EnemyUrroDisplay>();  //Get the canvas script to display the urro in the baloon
 		if(_urroDisplay) _urroDisplay.DisplayUrro (_urroType);
-		Debug.Log ("A chinchila inimiga fez seu urro!!!!");
+		//Debug.Log ("A chinchila inimiga fez seu urro!!!!");
 	}
 }

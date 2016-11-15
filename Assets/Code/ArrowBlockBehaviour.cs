@@ -16,8 +16,13 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 	private GameObject targetManager;
 	private string arrowsConfig;
 
+	private AudioManager audioManager;
+
 	// Use this for initialization
 	void Start(){
+
+		audioManager = AudioManager.instance;
+
 		team = GameObject.Find ("Team1");
 		playerManager = GameObject.Find ("_playerManager"); //Find the scene manager in the scene
 		targetManager = GameObject.Find("_enemyTeamManager"); //Find the scene manager
@@ -43,7 +48,7 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (atualArrow == arrowNum) { //Only needed to check if the block is already done
-			Debug.Log ("Result called");
+			//Debug.Log ("Result called");
 			Result ();
 			atualArrow++;
 		}
@@ -51,7 +56,7 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 
 	void Result(){ //Function Called when all arrows are checked
 		playerManager.GetComponent<PlayerManager>().EndedBlock(correctedArrows);
-		Debug.Log ("result() finished");
+		//Debug.Log ("result() finished");
 	}
 
 	public void GetArrowPressed(char _signal){ //Function made to check wich arrow was pressed and called the right function based on the manager information
@@ -70,9 +75,11 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 			nextArrow = transform.GetChild (_checkArrow);
 			if (nextArrow.CompareTag ("Up Arrow")) {
 				nextArrow.GetComponent<SpriteRenderer> ().color = Color.green; //Only change the renderer color to the player
+				audioManager.PlaySound("Hit");
 				correctedArrows++;
 			} else {
 				nextArrow.GetComponent<SpriteRenderer> ().color = Color.red;
+				audioManager.PlaySound ("Miss");
 			}
 		}
 	}
@@ -83,9 +90,11 @@ public class ArrowBlockBehaviour : MonoBehaviour {
 			nextArrow = transform.GetChild (_checkArrow);
 			if (nextArrow.CompareTag ("Down Arrow")) {
 				nextArrow.GetComponent<SpriteRenderer> ().color = Color.green;
+				audioManager.PlaySound ("Hit");
 				correctedArrows++;
 			} else {
 				nextArrow.GetComponent<SpriteRenderer> ().color = Color.red;
+				audioManager.PlaySound ("Miss");
 			}
 		}
 	}

@@ -8,6 +8,7 @@ public class BlockMap : MonoBehaviour {
 	public static string GetBlock(int _round){
 
 		if(_round <= 10){
+			Debug.Log ("Round equals to " + _round);
 			switch (_round){
 				case 0:
 					return "+-";
@@ -35,6 +36,7 @@ public class BlockMap : MonoBehaviour {
 					return "+-";
 			}
 		}
+		//Debug.Log ("Returned " + _round + " by switch");
 		return BlockMap.GetRandomRound(_round);
 	}
 
@@ -66,7 +68,7 @@ public class BlockMap : MonoBehaviour {
 		}
 
 		result = new string (_arrows);
-		Debug.Log(result);
+		Debug.Log("Returned " + result + "by random method");
 		return result;
 	}
 

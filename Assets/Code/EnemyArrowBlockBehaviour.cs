@@ -16,8 +16,13 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 	private GameObject targetManager;
 	private string arrowsConfig;
 
+	private AudioManager audioManager;
+
 	// Use this for initialization
 	void Start(){
+
+		audioManager = AudioManager.instance;
+
 		team = GameObject.Find ("Team2");
 		enemyManager = GameObject.Find ("_enemyTeamManager"); //Find the scene manager in the scene
 		targetManager = GameObject.Find("_playerManager"); //Find the player manager in the scene 
@@ -71,9 +76,11 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 
 			if (nextArrow.CompareTag ("Up Arrow")) {
 				nextArrow.GetComponent<SpriteRenderer> ().color = Color.green; //Only change the renderer color to the player
+				audioManager.PlaySound("Hit");
 				correctedArrows++;
 			} else {
 				nextArrow.GetComponent<SpriteRenderer> ().color = Color.red;
+				audioManager.PlaySound ("Miss");
 			}
 		}
 	}
@@ -86,9 +93,11 @@ public class EnemyArrowBlockBehaviour : MonoBehaviour {
 
 			if (nextArrow.CompareTag ("Down Arrow")) {
 				nextArrow.GetComponent<SpriteRenderer> ().color = Color.green;
+				audioManager.PlaySound ("Hit");
 				correctedArrows++;
 			} else {
 				nextArrow.GetComponent<SpriteRenderer> ().color = Color.red;
+				audioManager.PlaySound ("Miss");
 			}
 		}
 	}

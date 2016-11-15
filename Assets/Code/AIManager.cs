@@ -57,18 +57,19 @@ public class AIManager : MonoBehaviour {
 		var _enemyBehaviour = enemyManager.GetComponent<EnemyManager> ();
 		var _atualBlock = _enemyBehaviour.GetAtualBlock ();
 		var _atualBlockBehaviour = _atualBlock.GetComponent<EnemyArrowBlockBehaviour> ();	
-
-		if (gotRight) {
-			if (correctedArrow == '+') {
-				_atualBlockBehaviour.GetArrowPressed ('+');
+		if (_enemyBehaviour.CheckIfCanSendSignal ()) {
+			if (gotRight) {
+				if (correctedArrow == '+') {
+					_atualBlockBehaviour.GetArrowPressed ('+');
+				} else {
+					_atualBlockBehaviour.GetArrowPressed ('-');
+				} 
 			} else {
-				_atualBlockBehaviour.GetArrowPressed ('-');
-			} 
-		}else{
-			if (correctedArrow == '+') {
-				_atualBlockBehaviour.GetArrowPressed ('-');
-			} else {
-				_atualBlockBehaviour.GetArrowPressed ('+');
+				if (correctedArrow == '+') {
+					_atualBlockBehaviour.GetArrowPressed ('-');
+				} else {
+					_atualBlockBehaviour.GetArrowPressed ('+');
+				}
 			}
 		}
 	}
