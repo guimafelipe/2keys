@@ -40,6 +40,7 @@ public class MenuScript : MonoBehaviour {
 					StartCoroutine (LittleWait ());
 
 				} else {
+					whereIAm++;
 					gameObject.GetComponent<CreditsFadeScript> ().HideCredits ();
 					StartCoroutine (LittleWait ());
 				}

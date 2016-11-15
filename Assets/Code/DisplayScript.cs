@@ -21,7 +21,7 @@ public class DisplayScript : MonoBehaviour {
 	}
 
 	public void SetCountdown(float _countdown){
-		int _floorcountodown = Mathf.FloorToInt (_countdown);
+		int _floorcountodown = Mathf.CeilToInt (_countdown);
 		countdown.text = _floorcountodown + "";
 	}
 

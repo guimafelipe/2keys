@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameMasterBehaviour : MonoBehaviour {
 
@@ -16,6 +17,8 @@ public class GameMasterBehaviour : MonoBehaviour {
 	private int atualRound;
 
 	private bool canCreateNewRound;
+
+	private bool gameEnded = false;
 
 	private bool waitingPlayer, waitingEnemy;
 
@@ -47,6 +50,7 @@ public class GameMasterBehaviour : MonoBehaviour {
 		player.GetComponent<PlayerManager>().InitialSetup (levelRoute);
 		enemy.GetComponent<EnemyManager>().InitialSetup (levelRoute);
 		display.EndOfCountdown ();
+		display.SetRound (atualRound + 1);
 	}
 
 	// Update is called once per frame
@@ -59,6 +63,11 @@ public class GameMasterBehaviour : MonoBehaviour {
 			//Debug.Log ("Criou novo round");
 			StartCoroutine (TimePreparation());
 			canCreateNewRound = false;
+		}
+		if (gameEnded) {
+			if (Input.GetKeyDown ("w") || Input.GetKeyDown ("s")) {
+				SceneManager.LoadScene (0);
+			}
 		}
 	}
 
@@ -138,14 +147,21 @@ public class GameMasterBehaviour : MonoBehaviour {
 
 	public void GameOver(string _whoDied){
 		canCreateNewRound = false;
-		Debug.Log ("game over called");
+		//Debug.Log ("game over called");
 		if (_whoDied == "player") {
 			//Do something to indicate the player victory
 			GetComponent<GameOverFade>().BeginFade(1);
 		}
 		else if (_whoDied == "enemy"){
 			//Do something to indicate the player defeat
-			GetComponent<GameOverFade>().BeginFade(1);
+			GetComponent<WinFade>().BeginFade(1);
 		}
+
+		StartCoroutine (BackToMenu());
+	}
+
+	IEnumerator BackToMenu(){
+		yield return new WaitForSeconds (2);
+		gameEnded = true;
 	}
 }
